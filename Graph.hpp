@@ -76,7 +76,16 @@ public:
     // Devuelve cierto si u es el nodo con mayor inDegree.
     // En caso de que haya varios nodos que tengan el mayor inDegree,
     // devuelve true si u es uno de ellos
-    // bool isInfluencer(int u) const  {
-    // }
+    bool isInfluencer(int u) const  {
+
+        bool influencer = false;
+
+          if (u < 0 || u >= numVertices)
+            throw std::out_of_range("Vertice fuera de rango");
+        else {
+        
+            
+        }
+    }
 };
 
