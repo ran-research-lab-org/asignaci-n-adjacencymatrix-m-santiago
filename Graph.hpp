@@ -53,12 +53,24 @@ public:
 
     // Completa esta función
     // Devuelve el in-degree de un vertice
-    // int inDegree(int u) const {
-    //     if (u < 0 || u >= numVertices)
-    //         throw std::out_of_range("Vertice fuera de rango");
-    //     else {
-    //     }
-    // }
+    int inDegree(int u) const {
+
+        int inDegree = 0;
+
+        // en los grafos dirigidos el in-degree es el número de aristas que 'entran' a un vértice
+        // en la matriz, esto se ve por medio de las columnas, no las filas
+        // por ende, si quiero saber el 'in-degree' de un vértice, tengo que moverme hacia abajo
+
+        if (u < 0 || u >= numVertices)
+            throw std::out_of_range("Vertice fuera de rango");
+        else {
+            for (int j = 0; j < numVertices; ++j) {
+                if (adjMatrix[u][j] == 1) inDegree++;
+            }
+            
+        }
+        return inDegree;
+    }
 
     // Completa esta función
     // Devuelve cierto si u es el nodo con mayor inDegree.
