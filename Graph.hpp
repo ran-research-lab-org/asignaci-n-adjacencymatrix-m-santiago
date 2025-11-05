@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <map>
 
+using namespace std;
+
 class Graph {
 private:
     int numVertices;
@@ -77,25 +79,34 @@ public:
     // Devuelve cierto si u es el nodo con mayor inDegree.
     // En caso de que haya varios nodos que tengan el mayor inDegree,
     // devuelve true si u es uno de ellos
-    bool isInfluencer(int u) const  {
+    bool isInfluencer(int u) {
 
-        bool influencer = false;
         multimap<int, int> D;
         auto it = D.begin();
 
-        int inDegree = 0;
+        int degree = 0;
 
         if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
         else {
             for (int i = 0; i < numVertices; ++i) {
-                it->first = inDegree(i);
-                it->second = i;
+
+                for (int j = 0; j < numVertices; ++j) {
+                    if (adjMatrix[u][j] == 1) ++degree;
+                }
+
+                D.insert({degree, i});
             }  
             auto itr = D.end();
             itr--;
-            if (itr->second == u) return true;
-            else return false;        
+            int first = itr->second;
+            auto range = D.equal_range(first);
+            for (auto it = range.first; it != range.second; ++it) {\
+                cout << "esto es it->second: " << it->second << endl;
+                if (it->second == u) return true;
+    
+            }    
+            return false;
         }
     }
 };
