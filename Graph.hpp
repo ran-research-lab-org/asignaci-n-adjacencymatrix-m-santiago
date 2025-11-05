@@ -92,20 +92,26 @@ public:
             for (int i = 0; i < numVertices; ++i) {
 
                 for (int j = 0; j < numVertices; ++j) {
-                    if (adjMatrix[u][j] == 1) ++degree;
+                    if (adjMatrix[i][j] == 1) ++degree;
                 }
-
+                cout << "the degree for " << i << " is: " << degree << endl;
                 D.insert({degree, i});
+                degree = 0;
             }  
             auto itr = D.end();
             itr--;
             int first = itr->second;
-            auto range = D.equal_range(first);
-            for (auto it = range.first; it != range.second; ++it) {\
-                cout << "esto es it->second: " << it->second << endl;
-                if (it->second == u) return true;
+
+            for (const auto& pair : D) {
+                cout << "key: " << pair.first << ", value: " << pair.second << endl;
+            }
+
+            // auto range = D.equal_range(first);
+            // for (auto it = range.first; it != range.second; ++it) {
+            //     cout << "esto es it->second: " << it->second << endl;
+            //     if (it->second == u) return true;
     
-            }    
+            // }    
             return false;
         }
     }
