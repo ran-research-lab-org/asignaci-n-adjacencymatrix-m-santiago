@@ -8,4 +8,9 @@ int main() {
   G.addEdge(4, 2);
 
   G.print();
+
+  int edges = G.numEdges();
+
+  cout << endl;
+  cout << "El número de aristas es: " << edges << endl;
 }
