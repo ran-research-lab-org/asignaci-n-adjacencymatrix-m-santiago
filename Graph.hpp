@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <map>
 
 class Graph {
 private:
@@ -79,12 +80,22 @@ public:
     bool isInfluencer(int u) const  {
 
         bool influencer = false;
+        multimap<int, int> D;
+        auto it = D.begin();
 
-          if (u < 0 || u >= numVertices)
+        int inDegree = 0;
+
+        if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
         else {
-        
-            
+            for (int i = 0; i < numVertices; ++i) {
+                it->first = inDegree(i);
+                it->second = i;
+            }  
+            auto itr = D.end();
+            itr--;
+            if (itr->second == u) return true;
+            else return false;        
         }
     }
 };
