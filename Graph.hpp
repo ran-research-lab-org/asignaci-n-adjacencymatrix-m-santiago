@@ -1,6 +1,12 @@
+// Michelle A. Santiago 
+// 801 - 23 - 5483
+
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <map>
+
+using namespace std;
 
 class Graph {
 private:
@@ -33,23 +39,88 @@ public:
     // Implementar!! 
     // Devuelve la cantidad de aristas
     int numEdges() const {
-        return 0;
+
+        // en los grafos dirigidos, las aristas son representadas por 1
+        // debido a esto, tengo que contar las incidencias de 1
+
+        int edges = 0;
+
+        for (int i = 0; i < numVertices; ++i) {
+            for (int j = 0; j < numVertices; ++j) {
+               if (adjMatrix[i][j] == 1) edges++;
+            }
+        }
+
+        return edges;
     }
 
     // Completa esta función
     // Devuelve el in-degree de un vertice
     int inDegree(int u) const {
+
+        int inDegree = 0;
+
+        // en los grafos dirigidos el in-degree es el número de aristas que 'entran' a un vértice
+        // en la matriz, esto se ve por medio de las columnas, no las filas
+        // por ende, si quiero saber el 'in-degree' de un vértice, tengo que moverme hacia abajo
+
         if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
         else {
+            
+            for (int j = 0; j < numVertices; ++j) {
+                if (adjMatrix[j][u] == 1) {
+                    inDegree++;
+                    // cout << "calculating in-degree for " << j << " is: " << inDegree << endl; 
+                }
+            }
+            
         }
+        return inDegree;
     }
 
     // Completa esta función
     // Devuelve cierto si u es el nodo con mayor inDegree.
     // En caso de que haya varios nodos que tengan el mayor inDegree,
     // devuelve true si u es uno de ellos
-    bool isInfluencer(int u) const  {
+    bool isInfluencer(int u) {
+
+        multimap<int, int> D;
+        auto it = D.begin();
+
+        int degree = 0;
+
+        if (u < 0 || u >= numVertices)
+            throw std::out_of_range("Vertice fuera de rango");
+        else {
+            for (int i = 0; i < numVertices; ++i) {
+                // esto es confuso, pero es [j][i] y no [i][j] (creo) pq [i][j] es la cantidad de 
+                // nodos que salen de i, y no los que entran
+                for (int j = 0; j < numVertices; ++j) {
+                    if (adjMatrix[j][i] == 1) ++degree;
+                }
+                // cout << "the degree for " << i << " is: " << degree << endl;
+                D.insert({degree, i});
+                degree = 0;
+            }  
+            // obtengo el grado máximo como se ordenan de menor->mayor
+            // pero .end() apunta a un sentinela, así que lo decremento 1
+            auto itr = D.end();
+            itr--;
+            int maxdegree = itr->first;
+
+            // for (const auto& pair : D) {
+            //     cout << "key: " << pair.first << ", value: " << pair.second << endl;
+            // }
+
+            auto range = D.equal_range(maxdegree);
+            // aqui le estoy diciendo, dame todos los nodos que estén con el in-degree más
+            // alto, y dime si u está entre ellos 
+            for (auto it = range.first; it != range.second; ++it) {
+                if (it->second == u) return true;
+            }    
+            return false;
+        }
     }
 };
 
