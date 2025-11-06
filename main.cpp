@@ -12,6 +12,10 @@ int main() {
   G.addEdge(4, 2);
   G.addEdge(4, 5);
   G.addEdge(4, 9);
+  
+  G.addEdge(5, 4);
+  G.addEdge(7, 4);
+  G.addEdge(3, 4);
 
   G.print();
 

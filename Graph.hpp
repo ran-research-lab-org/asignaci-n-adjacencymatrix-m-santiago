@@ -67,8 +67,12 @@ public:
         if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
         else {
+            
             for (int j = 0; j < numVertices; ++j) {
-                if (adjMatrix[u][j] == 1) inDegree++;
+                if (adjMatrix[j][u] == 1) {
+                    inDegree++;
+                    // cout << "calculating in-degree for " << j << " is: " << inDegree << endl; 
+                }
             }
             
         }
@@ -90,28 +94,31 @@ public:
             throw std::out_of_range("Vertice fuera de rango");
         else {
             for (int i = 0; i < numVertices; ++i) {
-
+                // esto es confuso, pero es [j][i] y no [i][j] (creo) pq [i][j] es la cantidad de 
+                // nodos que salen de i, y no los que entran
                 for (int j = 0; j < numVertices; ++j) {
-                    if (adjMatrix[i][j] == 1) ++degree;
+                    if (adjMatrix[j][i] == 1) ++degree;
                 }
-                cout << "the degree for " << i << " is: " << degree << endl;
+                // cout << "the degree for " << i << " is: " << degree << endl;
                 D.insert({degree, i});
                 degree = 0;
             }  
+            // obtengo el grado máximo como se ordenan de menor->mayor
+            // pero .end() apunta a un sentinela, así que lo decremento 1
             auto itr = D.end();
             itr--;
-            int first = itr->second;
+            int maxdegree = itr->first;
 
-            for (const auto& pair : D) {
-                cout << "key: " << pair.first << ", value: " << pair.second << endl;
-            }
+            // for (const auto& pair : D) {
+            //     cout << "key: " << pair.first << ", value: " << pair.second << endl;
+            // }
 
-            // auto range = D.equal_range(first);
-            // for (auto it = range.first; it != range.second; ++it) {
-            //     cout << "esto es it->second: " << it->second << endl;
-            //     if (it->second == u) return true;
-    
-            // }    
+            auto range = D.equal_range(maxdegree);
+            // aqui le estoy diciendo, dame todos los nodos que estén con el in-degree más
+            // alto, y dime si u está entre ellos 
+            for (auto it = range.first; it != range.second; ++it) {
+                if (it->second == u) return true;
+            }    
             return false;
         }
     }
